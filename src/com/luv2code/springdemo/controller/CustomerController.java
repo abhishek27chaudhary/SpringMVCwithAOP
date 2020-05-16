@@ -51,6 +51,7 @@ public class CustomerController {
 		return "customer-form";
 	}
 	
+	//Adding new Customer
 	@PostMapping("/saveCustomer")
 	public String saveCustomer(@ModelAttribute("customer")Customer theCustomer) {
 		
