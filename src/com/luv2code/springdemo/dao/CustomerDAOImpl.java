@@ -19,16 +19,19 @@ public class CustomerDAOImpl implements CustomerDao {
 	@Autowired
 	private SessionFactory sessionFact;
 	
+	//@Transactional  // removing becasuse we have added Service layer
+	
 	@Override
-	@Transactional
 	public List<Customer> getCustomers() {
 		
 		//get the current hibernate session
 		Session currentSession = sessionFact.getCurrentSession();
 		
-		//create a query
+		//create a query 
+		//sort by lastname - just update the sql
 		Query theQuery = 
-				currentSession.createQuery("from Customer",Customer.class);
+				currentSession.createQuery("from Customer order by lastName",
+						Customer.class);
 		
 		//execute query
 		List<Customer> cust = theQuery.getResultList();
@@ -38,6 +41,20 @@ public class CustomerDAOImpl implements CustomerDao {
 		
 		
 		return cust;
+	}
+
+	@Override
+	public void saveCustomer(Customer theCustomer) {
+		
+		//get the current hibernate session
+		Session currentSession = sessionFact.openSession();
+		
+		
+		//save the customer
+		currentSession.save(theCustomer);
+		
+		//close the current Session
+		//currentSession.close();
 	}
 
 }
